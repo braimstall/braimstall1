@@ -1,0 +1,426 @@
+Histoires utilisateur & critères d’acceptation 
+
+EPIC 1 : GESTION DU PARCOURS CLIENT 
+
+Système de gestion du transport routier 
+
+v.001 
+
+
+Histoire CJ-001 : Inscription client et onboarding 
+
+En tant que nouveau client 
+Je veux m’inscrire à un compte et compléter la configuration de mon profil 
+Afin de pouvoir commencer à réserver des services de transport pour mon fret 
+
+Critères d’acceptation 
+
+AC-001 : Création de compte 
+
+Étant donné que je suis un nouvel utilisateur sur la page d’inscription 
+Lorsque je fournis des informations d’inscription valides (e‑mail, téléphone, mot de passe, informations sur l’entreprise) 
+Alors je devrais recevoir des codes de vérification par e‑mail et SMS 
+Et mon compte doit être créé avec le statut en attente de vérification 
+Et je devrais être redirigé vers la page de vérification 
+
+Règles métiers : 
+
+•  L’e‑mail doit être unique dans le système 
+
+•  Le numéro de téléphone doit être au format valide EAU/CCG (+971, +966, etc.) 
+
+•  Le mot de passe doit respecter les exigences de sécurité (≥ 8 caractères, 
+
+majuscules/minuscules/chiffres/symboles) 
+
+•  Validation du numéro d’enregistrement de l’entreprise (si fourni) 
+
+AC-002 : Vérification du compte 
+
+Étant donné que j’ai reçu les codes de vérification 
+Lorsque je saisis correctement les deux codes de vérification (e‑mail et SMS) 
+Alors le statut de mon compte devrait passer à actif 
+Et je devrais être connecté automatiquement 
+Et je devrais être redirigé vers la page de complétion du profil 
+
+Scénarios d’erreur : 
+
+•  Des messages d’erreur spécifiques s’affichent pour des codes invalides/expirés 
+
+•  Maximum 3 tentatives avant verrouillage du compte (24 heures) 
+
+•  Option de renvoi des codes disponible après 60 secondes 
+
+AC-003 : Complétion du profil 
+
+Étant donné que j’ai un compte vérifié 
+Lorsque je complète les champs obligatoires du profil (licence commerciale, adresse de facturation, personne de contact) 
+Alors mon profil devrait être marqué comme complet 
+Et je devrais avoir accès à la fonctionnalité de réservation complète 
+Et mon profil devrait être mis en file pour approbation par l’administrateur si des documents requis sont téléversés 
+
+Règles de validation : 
+
+•  Validation du numéro d’Emirates ID / licence commerciale 
+
+•  Vérification d’adresse via un service de cartographie 
+
+•  Téléversement de documents (PDF, JPG, PNG – 5 Mo max chacun) 
+
+AC-004 : Téléversement des documents KYC 
+
+Étant donné que je complète mon profil 
+Lorsque je téléverse des documents KYC (licence commerciale, Emirates ID, lettre d’autorisation) 
+Alors les documents doivent être analysés contre les virus et validés 
+Et le statut des documents doit afficher « En cours d’examen » 
+Et je devrais recevoir un e‑mail de confirmation 
+Et l’administrateur doit être notifié pour la revue des documents 
+
+Exigences de performance : 
+
+•  Le téléversement des documents doit se terminer en 30 secondes 
+
+•  L’analyse antivirus doit se terminer en 5 secondes 
+
+•  Compression d’image pour les fichiers > 2 Mo 
+
+Histoire CJ-002 : Création de demande de réservation avancée 
+
+En tant que client vérifié 
+Je veux créer des demandes de transport détaillées avec des exigences spécifiques 
+Afin d’obtenir des devis précis et des affectations de camions adaptées 
+
+Critères d’acceptation 
+
+AC-001 : Informations de base de la réservation 
+
+Étant donné que je suis sur la page de création de réservation 
+Lorsque je saisis les lieux d’enlèvement et de livraison via la recherche d’adresse ou la sélection sur carte 
+Alors le système doit valider les adresses et calculer la distance de l’itinéraire 
+Et le temps de trajet estimé doit être affiché 
+Et les zones de service disponibles doivent être mises en évidence 
+
+Règles de validation : 
+
+•  Les deux emplacements doivent être dans les zones desservies 
+
+•  Distance minimale de 1 km entre enlèvement et livraison 
+
+•  Distance maximale de 1000 km pour une réservation unique 
+
+•  Validation de la précision du géocodage d’adresse 
+
+AC-002 : Spécification de la cargaison 
+
+Étant donné que je précise les détails de la cargaison 
+Lorsque je saisis le type de cargaison, le poids, les dimensions et les exigences particulières 
+Alors le système doit valider la compatibilité poids/dimensions 
+Et les types de camions suggérés doivent être filtrés et affichés 
+Et des frais de manutention spéciale doivent être calculés le cas échéant 
+
+Règles métiers : 
+
+•  Poids : plage 1 kg – 50 000 kg 
+
+•  Dimensions : maximum 15 m de longueur x 3 m de largeur x 4 m de hauteur 
+
+•  Les matières dangereuses nécessitent une certification spéciale 
+
+•  Les marchandises réfrigérées nécessitent une plage de température 
+
+•  Les articles fragiles nécessitent une confirmation de manutention spéciale 
+
+AC-003 : Planification et calendrier 
+
+Étant donné que je définis le planning d’enlèvement/livraison 
+Lorsque je sélectionne des créneaux de date/heure préférés 
+Alors le système doit vérifier la disponibilité du conducteur/camion 
+Et les créneaux disponibles doivent être mis en évidence 
+Et les options express/urgentes doivent être clairement indiquées avec coûts supplémentaires 
+
+Règles de planification : 
+
+•  Réservation au moins 2 heures à l’avance pour le service standard 
+
+•  Service express disponible avec une majoration de 50 % 
+
+•  Réservations le week‑end/jours fériés : majoration de 25 % 
+
+•  Heures de pointe (7‑9 h, 17‑19 h) : majoration de 15 % 
+
+AC-004 : Instructions et exigences particulières 
+
+Étant donné que je dois spécifier des exigences de manutention particulières 
+Lorsque j’ajoute des instructions spéciales (personnes de contact, codes d’accès, exigences de manutention) 
+Alors les instructions doivent être validées pour complétude 
+Et des coûts supplémentaires pour les services spéciaux doivent être calculés 
+Et les exigences particulières doivent être signalées pour l’affectation du conducteur 
+
+Exigences particulières : 
+
+•  Points d’enlèvement/livraison multiples 
+
+•  Équipements spécifiques de chargement/déchargement nécessaires 
+
+•  Exigences d’escorte de sécurité 
+
+•  Fenêtres de livraison sensibles au temps 
+
+•  Présence d’un représentant client requise 
+
+AC-005 : Génération de devis en temps réel 
+
+Étant donné que j’ai complété tous les détails de la réservation 
+Lorsque je demande un devis 
+Alors le système doit calculer le prix en fonction de la distance, du poids, du type de cargaison et du calendrier 
+Et le devis doit s’afficher en moins de 5 secondes 
+Et le détail du devis doit montrer toutes les composantes de coût 
+Et le devis doit être valable 24 heures 
+
+Composantes de prix : 
+
+•  Tarif de base par type de camion 
+
+•  Frais de distance (par km) 
+
+•  Frais de poids (par kg au‑delà du poids de base) 
+
+•  Surtaxe pour cargaison spéciale 
+
+•  Surtaxe liée au temps 
+
+•  Facteur d’ajustement carburant 
+
+•  Taxes gouvernementales (TVA) 
+
+Histoire CJ-003 : Sélection intelligente du camion et confirmation de réservation 
+
+En tant que client 
+Je veux voir les camions disponibles avec des informations détaillées et faire un choix éclairé 
+Afin de réserver le camion le plus adapté à mes besoins 
+
+Critères d’acceptation 
+
+AC-001 : Affichage des camions disponibles 
+
+Étant donné que j’ai demandé un devis 
+Lorsque le système recherche des camions disponibles 
+Alors je devrais voir des camions filtrés par compatibilité de la cargaison 
+Et chaque fiche camion doit afficher les détails du camion, les informations du chauffeur, les notes et les prix 
+Et les camions doivent être triés par algorithme de meilleure correspondance 
+Et l’heure d’arrivée estimée doit être affichée pour chaque camion 
+
+Affichage des informations du camion : 
+
+•  Type de camion, capacité, dimensions 
+
+•  Position actuelle et distance par rapport au lieu d’enlèvement 
+
+•  Nom du chauffeur, photo, note (1–5 étoiles) 
+
+•  Nombre de trajets réalisés 
+
+•  Statut de disponibilité en temps réel 
+
+•  Âge du véhicule et note d’état 
+
+•  Détails de la couverture d’assurance 
+
+•  Équipements spéciaux disponibles 
+
+AC-002 : Fonctionnalités de comparaison des camions 
+
+Étant donné que je consulte les camions disponibles 
+Lorsque je souhaite comparer des camions 
+Alors je devrais pouvoir sélectionner jusqu’à 3 camions pour une comparaison côte à côte 
+Et la comparaison doit montrer tous les détails pertinents dans un tableau 
+Et je devrais pouvoir voir les différences de prix et les caractéristiques uniques 
+
+AC-003 : Profil du chauffeur et avis 
+
+Étant donné que j’envisage un camion spécifique 
+Lorsque je consulte les détails du chauffeur 
+Alors je devrais voir le profil du chauffeur avec photo, notes, résumé des avis 
+Et je devrais pouvoir lire les avis clients récents 
+Et les indicateurs de performance du chauffeur doivent être affichés (ponctualité, taux de dommages) 
+Et les certifications et l’expérience du chauffeur doivent être visibles 
+
+Informations sur le chauffeur : 
+
+•  Années d’expérience 
+
+•  Expérience sur cargaisons spécialisées 
+
+•  Maîtrise des langues 
+
+•  Dossier de sécurité 
+
+•  Taux de satisfaction client 
+
+•  Tendances de performance récentes 
+
+AC-004 : Confirmation de réservation et paiement 
+
+Étant donné que j’ai sélectionné un camion 
+Lorsque je procède à la confirmation de la réservation 
+Alors je devrais revoir tous les détails de la réservation dans un récapitulatif 
+Et je devrais sélectionner un moyen de paiement (carte bancaire, virement, conditions de crédit) 
+Et je devrais accepter les conditions générales 
+Et la réservation doit être confirmée avec une référence unique 
+Et les détails de confirmation doivent être envoyés par e‑mail et SMS 
+
+Options de paiement : 
+
+•  Paiement en ligne (carte de crédit, carte de débit) 
+
+•  Virement bancaire avec numéro de référence 
+
+•  Compte à crédit entreprise (si approuvé) 
+
+•  Paiement à la livraison (clients approuvés) 
+
+•  Paiement fractionné (acompte puis solde à la livraison) 
+
+AC-005 : Modification et annulation de réservation 
+
+Étant donné que j’ai une réservation confirmée 
+Lorsque j’ai besoin de modifier ou d’annuler la réservation 
+Alors je devrais pouvoir modifier les détails jusqu’à 2 heures avant l’enlèvement 
+Et l’annulation doit être autorisée avec des frais appropriés selon le délai 
+Et le chauffeur doit être automatiquement notifié des changements 
+Et le processus de remboursement doit être lancé pour les annulations (le cas échéant) 
+
+Règles de modification : 
+
+•  Modifications gratuites jusqu’à 24 heures avant l’enlèvement 
+
+•  Frais de 10 % pour les modifications dans les 24 heures 
+
+•  25 % de frais d’annulation dans les 24 heures 
+
+•  50 % de frais d’annulation dans les 2 heures 
+
+•  Aucun remboursement en cas de non‑présentation ou d’annulation de dernière minute 
+
+Histoire CJ-004 : Suivi d’expédition en temps réel 
+
+En tant que client 
+Je veux suivre mon expédition en temps réel avec des mises à jour détaillées du statut 
+Afin de pouvoir surveiller l’avancement et planifier la livraison 
+
+Critères d’acceptation 
+
+AC-001 : Suivi GPS en direct 
+
+Étant donné que ma réservation est confirmée et qu’un chauffeur est affecté 
+Lorsque j’accède à la page de suivi 
+Alors je devrais voir la position du camion en temps réel sur une carte interactive 
+Et le mouvement du camion doit se mettre à jour toutes les 30 secondes 
+Et l’heure d’arrivée estimée doit être mise à jour selon la position actuelle 
+Et l’itinéraire doit afficher les portions effectuées et restantes 
+
+Fonctionnalités de la carte : 
+
+•  Modes satellite et plan 
+
+•  Surcouche des conditions de circulation 
+
+•  Fonctionnalités de zoom et panoramique 
+
+•  Marqueurs d’enlèvement et de livraison 
+
+•  Position actuelle du camion avec indicateur de direction 
+
+•  Zones géo‑clôturées (zones restreintes, points de contrôle) 
+
+AC-002 : Mises à jour de statut de livraison 
+
+Étant donné que mon expédition est en transit 
+Lorsque des changements de statut surviennent 
+Alors je devrais recevoir des mises à jour automatiques par SMS et notifications push 
+Et la chronologie des statuts doit être mise à jour dans l’application 
+Et les ajustements de l’heure de livraison estimée doivent être communiqués 
+
+Mises à jour de statut : 
+
+•  Chauffeur dépêché et en route vers l’enlèvement 
+
+•  Arrivé au lieu d’enlèvement 
+
+•  Cargaison chargée et départ confirmé 
+
+•  En route vers la livraison avec position en temps réel 
+
+•  Arrivé au lieu de livraison 
+
+•  Cargaison livrée et signée 
+
+AC-003 : Communication avec le chauffeur 
+
+Étant donné que j’ai besoin de communiquer avec le chauffeur 
+Lorsque j’utilise les fonctionnalités de communication intégrées à l’application 
+Alors je devrais pouvoir appeler le chauffeur directement (numéro masqué) 
+Et je devrais pouvoir envoyer des messages texte via l’application 
+Et l’historique des communications doit être conservé 
+Et des options de contact d’urgence doivent être disponibles 
+
+Fonctionnalités de communication : 
+
+•  Appel en un clic avec numéros masqués pour la confidentialité 
+
+•  Messagerie intégrée avec confirmation de livraison 
+
+•  Possibilité de message vocal 
+
+•  Partage de photos de l’état de la cargaison 
+
+•  Contact d’urgence vers le centre des opérations 
+
+•  Support de traduction multilingue 
+
+AC-004 : Preuve de livraison et documentation 
+
+Étant donné que ma cargaison a été livrée 
+Lorsque le chauffeur termine la livraison 
+Alors je devrais recevoir une confirmation de livraison avec horodatage 
+Et les documents de preuve de livraison doivent être disponibles (photos, signature) 
+Et le rapport de livraison doit inclure toute note de dommage ou de divergence 
+Et la facture doit être générée et envoyée automatiquement 
+
+Documentation de livraison : 
+
+•  Coordonnées GPS et horodatage de la livraison 
+
+•  Capture de signature numérique 
+
+•  Photos de la cargaison livrée 
+
+•  Évaluation des dommages avec photos 
+
+•  Identification de la personne ayant réceptionné 
+
+•  Confirmation du respect des instructions spéciales 
+
+AC-005 : Analytique de livraison et retour d’expérience 
+
+Étant donné que ma livraison est terminée 
+Lorsque je consulte les détails du trajet 
+Alors je devrais voir des analyses complètes du trajet 
+Et je devrais pouvoir noter le chauffeur et le service 
+Et je devrais pouvoir fournir un retour d’expérience détaillé 
+Et les données du trajet doivent être stockées pour référence future et résolution de litiges 
+
+Analyses fournies : 
+
+•  Distance totale parcourue vs itinéraire prévu 
+
+•  Temps réel vs temps estimé de livraison 
+
+•  Analyse d’efficacité de l’itinéraire 
+
+•  Consommation de carburant (si disponible) 
+
+•  Indicateurs de performance du chauffeur 
+
+•  Décomposition des coûts et comparaison avec le devis 
+
