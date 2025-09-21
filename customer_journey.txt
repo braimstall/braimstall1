@@ -1,0 +1,296 @@
+ 
+ 
+User Stories & Acceptance Criteria 
+EPIC 1: CUSTOMER JOURNEY MANAGEMENT 
+Truck Transportation Management System 
+v.001 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+Story CJ-001: Customer Registration and Onboarding 
+As a new customer 
+I want to register for an account and complete profile setup 
+So that I can start booking transportation services for my cargo 
+Acceptance Criteria 
+AC-001: Account Creation 
+Given I am a new user on the registration page 
+When I provide valid registration information (email, phone, password, company details) 
+Then I should receive email and SMS verification codes 
+And my account should be created in pending verification status 
+And I should be redirected to verification page 
+Business Rules: 
+• Email must be unique in the system 
+• Phone number must be valid UAE/GCC format (+971, +966, etc.) 
+• Password must meet security requirements (8+ chars, 
+upper/lower/numbers/symbols) 
+• Company registration number validation (if provided) 
+AC-002: Account Verification 
+Given I have received verification codes 
+When I enter both email and SMS verification codes correctly 
+Then my account status should change to active 
+And I should be automatically logged in 
+And I should be redirected to profile completion page 
+Error Scenarios: 
+• Invalid/expired verification codes show specific error messages 
+• Maximum 3 attempts before account lockout (24 hours) 
+• Resend verification option available after 60 seconds 
+AC-003: Profile Completion 
+
+Given I have a verified account 
+When I complete mandatory profile fields (business license, billing address, contact 
+person) 
+Then my profile should be marked as complete 
+And I should have access to full booking functionality 
+And my profile should be queued for admin approval if required documents are uploaded 
+Validation Rules: 
+• Emirates ID/Trade License number validation 
+• Address verification through mapping service 
+• Document upload (PDF , JPG, PNG max 5MB each) 
+AC-004: KYC Document Upload 
+Given I am completing my profile 
+When I upload KYC documents (Trade License, Emirates ID, Authorization Letter) 
+Then documents should be virus scanned and validated 
+And document status should show as "Under Review" 
+And I should receive confirmation email 
+And admin should be notified for document review 
+Performance Requirements: 
+• Document upload should complete within 30 seconds 
+• Virus scanning should complete within 5 seconds 
+• Image compression for files > 2MB 
+ 
+Story CJ-002: Advanced Booking Request Creation 
+As a verified customer 
+I want to create detailed transportation requests with specific requirements 
+So that I can get accurate quotes and suitable truck assignments 
+Acceptance Criteria 
+AC-001: Basic Booking Information 
+Given I am on the create booking page 
+When I enter pickup and delivery locations using address search or map selection 
+
+Then the system should validate addresses and calculate route distance 
+And estimated travel time should be displayed 
+And available service areas should be highlighted 
+Validation Rules: 
+• Both locations must be within service areas 
+• Minimum 1km distance between pickup and delivery 
+• Maximum 1000km distance for single booking 
+• Address geocoding accuracy validation 
+AC-002: Cargo Specification 
+Given I am specifying cargo details 
+When I enter cargo type, weight, dimensions, and special requirements 
+Then the system should validate weight/dimension compatibility 
+And suggested truck types should be filtered and displayed 
+And special handling fees should be calculated if applicable 
+Business Rules: 
+• Weight: 1kg - 50,000kg range 
+• Dimensions: Maximum 15m length x 3m width x 4m height 
+• Hazardous materials require special certification 
+• Refrigerated goods require temperature range specification 
+• Fragile items require special handling confirmation 
+AC-003: Scheduling and Timeline 
+Given I am setting pickup/delivery schedule 
+When I select preferred date/time slots 
+Then the system should check driver/truck availability 
+And available time slots should be highlighted 
+And express/urgent options should be clearly marked with additional costs 
+Scheduling Rules: 
+• Minimum 2 hours advance booking for standard service 
+• Express service available with 50% surcharge 
+
+• Weekend/holiday bookings have 25% surcharge 
+• Peak hours (7-9 AM, 5-7 PM) have 15% surcharge 
+AC-004: Special Instructions and Requirements 
+Given I need to specify special handling requirements 
+When I add special instructions (contact persons, access codes, handling requirements) 
+Then instructions should be validated for completeness 
+And additional costs for special services should be calculated 
+And special requirements should be flagged for driver assignment 
+Special Requirements: 
+• Multiple pickup/delivery points 
+• Specific loading/unloading equipment needed 
+• Security escort requirements 
+• Time-sensitive delivery windows 
+• Customer representative presence required 
+AC-005: Real-time Quote Generation 
+Given I have completed all booking details 
+When I request a quote 
+Then the system should calculate pricing based on distance, weight, cargo type, and timing 
+And quote should be displayed within 5 seconds 
+And quote breakdown should show all cost components 
+And quote should be valid for 24 hours 
+Pricing Components: 
+• Base rate by truck type 
+• Distance charges (per km) 
+• Weight charges (per kg above base weight) 
+• Special cargo surcharge 
+• Time-based surcharge 
+• Fuel adjustment factor 
+• Government taxes (VAT) 
+
+ 
+Story CJ-003: Smart Truck Selection and Booking Confirmation 
+As a customer 
+I want to view available trucks with detailed information and make informed selection 
+So that I can book the most suitable truck for my cargo requirements 
+Acceptance Criteria 
+AC-001: Available Truck Display 
+Given I have requested a quote 
+When the system searches for available trucks 
+Then I should see trucks filtered by cargo compatibility 
+And each truck listing should show truck details, driver info, ratings, and pricing 
+And trucks should be sorted by best match algorithm 
+And estimated arrival time should be displayed for each truck 
+Truck Information Display: 
+• Truck type, capacity, dimensions 
+• Current location and distance from pickup 
+• Driver name, photo, rating (1-5 stars) 
+• Completed trips count 
+• Real-time availability status 
+• Vehicle age and condition rating 
+• Insurance coverage details 
+• Special equipment available 
+AC-002: Truck Comparison Features 
+Given I am viewing available trucks 
+When I want to compare trucks 
+Then I should be able to select up to 3 trucks for side-by-side comparison 
+And comparison should show all relevant details in tabular format 
+And I should be able to see price differences and unique features 
+AC-003: Driver Profile and Reviews 
+
+Given I am considering a specific truck 
+When I view driver details 
+Then I should see driver's profile with photo, ratings, review summary 
+And I should be able to read recent customer reviews 
+And driver's performance metrics should be displayed (on-time rate, damage rate) 
+And driver's certifications and experience should be shown 
+Driver Information: 
+• Years of experience 
+• Specialized cargo experience 
+• Language proficiency 
+• Safety record 
+• Customer satisfaction rating 
+• Recent performance trends 
+AC-004: Booking Confirmation and Payment 
+Given I have selected a truck 
+When I proceed to confirm booking 
+Then I should review all booking details in a summary 
+And I should select payment method (credit card, bank transfer, credit terms) 
+And I should accept terms and conditions 
+And booking should be confirmed with unique booking reference 
+And confirmation details should be sent via email and SMS 
+Payment Options: 
+• Online payment (credit card, debit card) 
+• Bank transfer with reference number 
+• Corporate credit account (if approved) 
+• Pay on delivery (for approved customers) 
+• Split payment (partial advance, balance on delivery) 
+AC-005: Booking Modification and Cancellation 
+Given I have a confirmed booking 
+When I need to modify or cancel the booking 
+
+Then I should be able to modify details up to 2 hours before pickup 
+And cancellation should be allowed with appropriate fees based on timing 
+And driver should be automatically notified of changes 
+And refund process should be initiated for cancellations (if applicable) 
+Modification Rules: 
+• Free modifications up to 24 hours before pickup 
+• 10% fee for modifications within 24 hours 
+• 25% cancellation fee within 24 hours 
+• 50% cancellation fee within 2 hours 
+• No refund for no-show or last-minute cancellation 
+ 
+Story CJ-004: Real-time Shipment Tracking 
+As a customer 
+I want to track my shipment in real-time with detailed status updates 
+So that I can monitor progress and plan accordingly for delivery 
+Acceptance Criteria 
+AC-001: Live GPS Tracking 
+Given my booking is confirmed and driver is assigned 
+When I access the tracking page 
+Then I should see real-time truck location on an interactive map 
+And truck movement should update every 30 seconds 
+And estimated arrival time should be updated based on current location 
+And route should be displayed with completed and remaining portions 
+Map Features: 
+• Satellite and street view options 
+• Traffic conditions overlay 
+• Zoom and pan functionality 
+• Pickup and delivery markers 
+• Current truck position with heading indicator 
+
+• Geofenced areas (restricted zones, checkpoints) 
+AC-002: Delivery Status Updates 
+Given my shipment is in transit 
+When there are status changes 
+Then I should receive automatic updates via SMS and push notifications 
+And status timeline should be updated in the app 
+And estimated delivery time adjustments should be communicated 
+Status Updates: 
+• Driver dispatched and en route to pickup 
+• Arrived at pickup location 
+• Cargo loaded and departure confirmed 
+• En route to delivery with real-time location 
+• Arrived at delivery location 
+• Cargo delivered and signed off 
+AC-003: Communication with Driver 
+Given I need to communicate with the driver 
+When I use the in-app communication features 
+Then I should be able to call the driver directly (masked phone number) 
+And I should be able to send text messages through the app 
+And communication history should be maintained 
+And emergency contact options should be available 
+Communication Features: 
+• Click-to-call with masked numbers for privacy 
+• In-app messaging with delivery confirmation 
+• Voice message capability 
+• Photo sharing for cargo condition 
+• Emergency contact to operations center 
+• Translation support for multiple languages 
+AC-004: Delivery Proof and Documentation 
+
+Given my cargo has been delivered 
+When the driver completes delivery 
+Then I should receive delivery confirmation with timestamp 
+And proof of delivery documents should be available (photos, signature) 
+And delivery report should include any damage or discrepancy notes 
+And invoice should be generated and sent automatically 
+Delivery Documentation: 
+• GPS coordinates and timestamp of delivery 
+• Digital signature capture 
+• Photos of delivered cargo 
+• Any damage assessment with photos 
+• Delivery person identification 
+• Special instructions compliance confirmation 
+AC-005: Delivery Analytics and Feedback 
+Given my delivery is completed 
+When I review the trip details 
+Then I should see comprehensive trip analytics 
+And I should be able to rate the driver and service 
+And I should be able to provide detailed feedback 
+And trip data should be stored for future reference and dispute resolution 
+Analytics Provided: 
+• Total distance traveled vs. planned route 
+• Actual vs. estimated delivery time 
+• Route efficiency analysis 
+• Fuel consumption (if available) 
+• Driver performance metrics 
+• Cost breakdown and comparison with quote 
+ 
